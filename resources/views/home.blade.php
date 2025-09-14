@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Home</title>
-<body>
-      <h1>Welcome to My Blog System 🎉</h1>
-    <p>This is the homepage built with Laravel + Blade.</p>
-    <p><a href="/about">Go to About Page</a></p>
-</body>
-</head>
-</html>
+ @extends('layouts.app')
+
+ @section('title','Home')
+
+ @section('content')
+ <h1>Welcome to my Blog System 🎉</h1>
+ <p>This is the homepage built with laravel + blade layouts.</p>
+ @endsection
