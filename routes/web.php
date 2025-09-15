@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Models\Post;
-
+use App\Http\Controllers\PostController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,3 +35,6 @@ Route::get('/posts-demo', function(){
     $posts = Post::latest()->take(10)->get();
     return view('posts-demo', compact('posts'));
 });
+
+//Routes of post
+Route::resource('posts', PostController::class);
