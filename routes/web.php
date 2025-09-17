@@ -1,40 +1,56 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PageController;
-use App\Models\Post;
 use App\Http\Controllers\PostController;
-
 Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/',[PageController::class, 'home']);
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+// public post routes
+Route::get('/posts', [PostController::class, 'index'])  // 7. Anyone can list posts.
+->name('posts.index');                                  // 8. Route name = posts.index.
 
-//simple text respone
-Route::get('/hello',function(){
-    return "Hello Laravel!";
+                                     // 10. Route name = posts.show.
+Route::middleware(['auth'])->group(function(){    // 11. Group requires login.
+Route::get('/posts/create', [PostController::class , 'create'])          // 12. Show form to create (must be logged in).
+->name('posts.create');        // 13. Name = posts.create.
+
+Route::post('/posts',[PostController::class, 'store'])
+->name('posts.store');
+
+Route::get('/posts/{post}/edit',[PostController::class, 'edit'])
+->name('posts.edit');
+
+Route::put('/posts/{post}',[PostController::class, 'update'])
+->name('posts.update');
+
+Route::delete('/posts/{post}',[PostController::class, 'destroy'])
+->name('posts.destroy');
+});                                   
+  
+Route::get('/posts/{post}', [PostController::class, 'show'])  // 9. Anyone can view a single post.
+->name('posts.show');    
+
+
+
+
+
+
+Route::view('/test-bootstrap', 'test-bootstrap');
+
+
+Route::get('/debug-navbar', function () {
+    return view('debug-navbar');
 });
 
-//Route that loads a view
-Route::get('/about',function(){
-    return view('about');
-});
-
-//contact page
-Route::get('/contact',function(){
-    return view('contact');
-});
-//route for posts
-Route::get('/posts', function(){
-    $posts = Post::all();
-    return view('posts',['posts' => $posts]);
-});
-Route::get('/posts-demo', function(){
-    $posts = Post::latest()->take(10)->get();
-    return view('posts-demo', compact('posts'));
-});
-
-//Routes of post
-Route::resource('posts', PostController::class);
+require __DIR__.'/auth.php';
