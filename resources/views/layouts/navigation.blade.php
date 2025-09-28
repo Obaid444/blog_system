@@ -64,16 +64,16 @@ Blog_System            </a>
          x-transition:leave="transition ease-in duration-150"
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 -translate-y-2"
-         class="sm:hidden px-4 pt-2 pb-3 space-y-2 bg-blue-600 shadow-md rounded-b-lg">
+         class="sm:hidden px-4 pt-2 pb-3 space-y-2 bg-gray-200 shadow-md rounded-b-lg">
 
-        <a href="{{ route('posts.index') }}" class="block text-white hover:text-yellow-300">Posts</a>
+        <a href="{{ route('posts.index') }}" class="block text-dark hover:text-yellow-300 no-underline">Posts</a>
 
         @auth
-            <a href="{{ route('posts.create') }}" class="block text-white hover:text-yellow-300">Create Post</a>
+            <a href="{{ route('posts.create') }}" class="block text-dark hover:text-yellow-300 no-underline">Create Post</a>
             <span class="block text-gray-200">{{ Auth::user()->name }}</span>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button class="w-full text-left bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition">
+                <button class="w-full text-left bg-gray-400 hover:bg-gray-600 text-dark px-3 py-1 rounded-md transition">
                     Logout
                 </button>
             </form>

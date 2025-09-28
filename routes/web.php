@@ -3,10 +3,12 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\CommentController;
+ 
 
+Route::get('/', function () {
+    return redirect()->route('posts.index');
+});
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -36,21 +38,19 @@ Route::put('/posts/{post}',[PostController::class, 'update'])
 
 Route::delete('/posts/{post}',[PostController::class, 'destroy'])
 ->name('posts.destroy');
-});                                   
-  
+// route for comments section
+Route::post('/posts/{post}/comments',[CommentController::class,'store'])
+->name('comments.store');
+                                
+Route::Delete('comments/{comment}',[CommentController::class,'destroy'])
+->name('comments.destroy');
+});    
 Route::get('/posts/{post}', [PostController::class, 'show'])  // 9. Anyone can view a single post.
 ->name('posts.show');    
 
 
 
 
-
-
-Route::view('/test-bootstrap', 'test-bootstrap');
-
-
-Route::get('/debug-navbar', function () {
-    return view('debug-navbar');
-});
-
+ 
+ 
 require __DIR__.'/auth.php';
