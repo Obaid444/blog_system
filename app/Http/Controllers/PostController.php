@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Jobs\SendPostPublishedEmail;
+use App\Events\PostPublished; // add at top
 
 class PostController extends Controller
 {
@@ -46,8 +47,7 @@ class PostController extends Controller
     $post = $request->user()->posts()->create($validated);
 
     // QUEUE THE JOB (runs in background)
-    SendPostPublishedEmail::dispatch($post);            // (1)
-    // OR with a 10-second delay:
+event(new PostPublished($post));    // OR with a 10-second delay:
     // SendPostPublishedEmail::dispatch($post)->delay(now()->addSeconds(10));
 
     return redirect()->route('posts.index')->with('success', 'Post created! We will email you shortly.');

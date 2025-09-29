@@ -4,7 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
- 
+ use App\Models\Post;
+
 
 Route::get('/', function () {
     return redirect()->route('posts.index');
@@ -51,6 +52,9 @@ Route::get('/posts/{post}', [PostController::class, 'show'])  // 9. Anyone can v
 
 
 
- 
+Route::get('/preview-email', function () {
+    $post = Post::with('user')->first(); // Get a sample post with user
+    return new \App\Mail\PostPublishedMail($post);
+});
  
 require __DIR__.'/auth.php';
